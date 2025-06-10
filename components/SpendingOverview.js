@@ -119,4 +119,5 @@ const SpendingOverview = ({ onExpensesChange }) => {
   );
 };
 
+
 export default SpendingOverview;
