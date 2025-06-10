@@ -22,13 +22,14 @@ const SpendingOverview = ({ onExpensesChange }) => {
   const handleAmountUpdate = () => {
     if (amount) {
       const newExpenses = expenses.map(item =>
-        item.label === selectedCategory ? { ...item, amount } : item
+        item.label === selectedCategory
+          ? { ...item, amount: (Number(item.amount) || 0) + Number(amount) }
+          : item
       );
       setExpenses(newExpenses);
       setAmount('');
     }
   };
-
 
   return (
     <section style={{
@@ -41,7 +42,13 @@ const SpendingOverview = ({ onExpensesChange }) => {
       animation: 'slideUp 0.8s ease forwards'
     }}>
       <h2 style={{ fontWeight: '700', marginBottom: '1rem', color: '#4f46e5' }}>Spending Overview</h2>
-      <div style={{ marginBottom: '1rem', display: 'flex',flexDirection: 'column', alignItems: 'center' ,marginBottom:0.5rem}}>
+      <div style={{
+        marginBottom: '1rem',
+        display: 'flex',
+        alignItems: 'center',
+        flexWrap: 'wrap',
+        gap: '0.5rem'
+      }}>
         <select
           value={selectedCategory}
           onChange={(e) => setSelectedCategory(e.target.value)}
@@ -49,8 +56,9 @@ const SpendingOverview = ({ onExpensesChange }) => {
             border: '1px solid #e5e7eb',
             borderRadius: '4px',
             padding: '0.5rem',
-            marginRight: '0.5rem',
-            fontFamily: 'Segoe UI, sans-serif'
+            fontFamily: 'Segoe UI, sans-serif',
+            flex: '1 1 auto',
+            minWidth: '120px'
           }}
         >
           {categories.map((category, idx) => (
@@ -66,8 +74,9 @@ const SpendingOverview = ({ onExpensesChange }) => {
             border: '1px solid #e5e7eb',
             borderRadius: '4px',
             padding: '0.5rem',
-            marginRight: '0.5rem',
-            fontFamily: 'Segoe UI, sans-serif'
+            fontFamily: 'Segoe UI, sans-serif',
+            flex: '1 1 auto',
+            minWidth: '100px'
           }}
         />
         <button
@@ -79,7 +88,8 @@ const SpendingOverview = ({ onExpensesChange }) => {
             borderRadius: '4px',
             padding: '0.5rem 1rem',
             cursor: 'pointer',
-            fontFamily: 'Segoe UI, sans-serif'
+            fontFamily: 'Segoe UI, sans-serif',
+            flex: '0 0 auto'
           }}
         >
           Update Amount
