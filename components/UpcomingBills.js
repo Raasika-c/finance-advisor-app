@@ -27,7 +27,7 @@ const UpcomingBills = ({ onBillsChange }) => {
       animation: 'slideUp 0.8s ease forwards'
     }}>
       <h2 style={{ fontWeight: '700', marginBottom: '1rem', color: '#4f46e5' }}>Upcoming Bills</h2>
-      <div style={{ marginBottom: '1rem' }}>
+      <div style={{ marginBottom: '1rem',display:'flex',flexWrap:'wrap',gap:'0.5rem'}}>
         <input
           type="text"
           placeholder="Bill Name"
