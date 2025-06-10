@@ -28,7 +28,7 @@ const SpendingOverview = ({ onExpensesChange }) => {
       setAmount('');
     }
   };
-  
+
 
   return (
     <section style={{
@@ -41,7 +41,7 @@ const SpendingOverview = ({ onExpensesChange }) => {
       animation: 'slideUp 0.8s ease forwards'
     }}>
       <h2 style={{ fontWeight: '700', marginBottom: '1rem', color: '#4f46e5' }}>Spending Overview</h2>
-      <div style={{ marginBottom: '1rem', display: 'flex',flexDirection: 'column', alignItems: 'center' }}>
+      <div style={{ marginBottom: '1rem', display: 'flex',flexDirection: 'column', alignItems: 'center' ,margin:0.5}}>
         <select
           value={selectedCategory}
           onChange={(e) => setSelectedCategory(e.target.value)}
