@@ -28,6 +28,7 @@ const SpendingOverview = ({ onExpensesChange }) => {
       setAmount('');
     }
   };
+  
 
   return (
     <section style={{
