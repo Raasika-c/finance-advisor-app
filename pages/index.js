@@ -117,6 +117,10 @@ export default function Home() {
       <section className="education" id="education">
         <h2>Finance Literacy Courses</h2>
         
+         <p>
+          Boost your knowledge with our curated mini-courses on saving, budgeting, and personal finance. Perfect for beginners and experts alike!
+        </p>
+        
         <video
           controls
           poster="https://img.youtube.com/vi/Ay4fmZdZqJE/maxresdefault.jpg"
@@ -124,9 +128,7 @@ export default function Home() {
           <source src="https://www.w3schools.com/html/mov_bbb.mp4" type="video/mp4" />
           Your browser does not support the video tag.
         </video>
-        <p>
-          Boost your knowledge with our curated mini-courses on saving, budgeting, and personal finance. Perfect for beginners and experts alike!
-        </p>
+       
       </section>
 
       <section className="stats">
