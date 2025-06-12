@@ -4,7 +4,7 @@ import Head from 'next/head';
 import SpendingOverview from '../components/SpendingOverview';
 import UpcomingBills from '../components/UpcomingBills';
 import IncomeExpenseSummary from '../components/IncomeExpenseSummary';
-
+import GeminiChat from '../components/GeminiChat'; // ✅ Add this line
 
 export default function Dashboard() {
   const [spendingExpenses, setSpendingExpenses] = useState(0);
@@ -75,6 +75,8 @@ export default function Dashboard() {
         <UpcomingBills onBillsChange={setBillsExpenses} />
         <IncomeExpenseSummary totalExpenses={totalExpenses} />
       </main>
+
+      <GeminiChat /> {/* ✅ Add Chatbot to your dashboard */}
     </>
   );
 }
