@@ -4,7 +4,7 @@ import Head from 'next/head';
 import SpendingOverview from '../components/SpendingOverview';
 import UpcomingBills from '../components/UpcomingBills';
 import IncomeExpenseSummary from '../components/IncomeExpenseSummary';
-import GeminiChat from '../components/GeminiChat'; // ✅ Add this line
+import GeminiChat from '../components/GeminiChat'; // ✅ AI Chatbot
 
 export default function Dashboard() {
   const [spendingExpenses, setSpendingExpenses] = useState(0);
@@ -35,30 +35,38 @@ export default function Dashboard() {
       }}>
         <div style={{ fontSize: '1.8rem', fontWeight: '700' }}>Budget Buddy</div>
         <nav>
-          <Link href="/" style={{
-            color: 'white',
-            marginLeft: '1.5rem',
-            textDecoration: 'none',
-            fontWeight: '600'
-          }}>Home</Link>
-          <Link href="/contact" style={{
-            color: 'white',
-            marginLeft: '1.5rem',
-            textDecoration: 'none',
-            fontWeight: '600'
-          }}>Contact</Link>
-          <Link href="/about" style={{
-            color: 'white',
-            marginLeft: '1.5rem',
-            textDecoration: 'none',
-            fontWeight: '600'
-          }}>About Us</Link>
-          <Link href="/login" style={{
-            color: 'white',
-            marginLeft: '1.5rem',
-            textDecoration: 'none',
-            fontWeight: '600'
-          }}>Login</Link>
+          <Link href="/" passHref legacyBehavior>
+            <a style={{
+              color: 'white',
+              marginLeft: '1.5rem',
+              textDecoration: 'none',
+              fontWeight: '600'
+            }}>Home</a>
+          </Link>
+          <Link href="/contact" passHref legacyBehavior>
+            <a style={{
+              color: 'white',
+              marginLeft: '1.5rem',
+              textDecoration: 'none',
+              fontWeight: '600'
+            }}>Contact</a>
+          </Link>
+          <Link href="/about" passHref legacyBehavior>
+            <a style={{
+              color: 'white',
+              marginLeft: '1.5rem',
+              textDecoration: 'none',
+              fontWeight: '600'
+            }}>About Us</a>
+          </Link>
+          <Link href="/login" passHref legacyBehavior>
+            <a style={{
+              color: 'white',
+              marginLeft: '1.5rem',
+              textDecoration: 'none',
+              fontWeight: '600'
+            }}>Login</a>
+          </Link>
         </nav>
       </header>
 
@@ -76,7 +84,7 @@ export default function Dashboard() {
         <IncomeExpenseSummary totalExpenses={totalExpenses} />
       </main>
 
-      <GeminiChat /> {/* ✅ Add Chatbot to your dashboard */}
+      <GeminiChat /> {/* ✅ Floating Gemini AI Chatbot */}
     </>
   );
 }

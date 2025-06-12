@@ -1,16 +1,11 @@
-import { useState, useRef, useEffect } from 'react';
+import React, { useState } from 'react';
 
-const GeminiChat = () => {
+export default function GeminiChat() {
   const [isOpen, setIsOpen] = useState(false);
-  const [messages, setMessages] = useState([
-    { role: 'ai', text: 'Hi! I am Gemini AI. How can I help you today?' }
-  ]);
+  const [messages, setMessages] = useState([]);
   const [input, setInput] = useState('');
-  const chatEndRef = useRef(null);
 
-  useEffect(() => {
-    chatEndRef.current?.scrollIntoView({ behavior: 'smooth' });
-  }, [messages]);
+  const toggleChat = () => setIsOpen(!isOpen);
 
   const handleSend = async () => {
     if (!input.trim()) return;
@@ -21,7 +16,7 @@ const GeminiChat = () => {
 
     try {
       const res = await fetch(
-        'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-pro:generateContent?key=AIzaSyAkH2k5bq07VapBI2O_-oeLKk7qusvEGbY',
+        'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=AIzaSyAkH2k5bq07VapBI2O_-oeLKk7qusvEGbY',
         {
           method: 'POST',
           headers: {
@@ -30,6 +25,7 @@ const GeminiChat = () => {
           body: JSON.stringify({
             contents: [
               {
+                role: 'user',
                 parts: [{ text: input }],
               },
             ],
@@ -40,34 +36,35 @@ const GeminiChat = () => {
       const data = await res.json();
       const aiReply = data?.candidates?.[0]?.content?.parts?.[0]?.text || 'Sorry, I could not respond.';
       setMessages((prev) => [...prev, { role: 'ai', text: aiReply }]);
-    } catch (err) {
+    } catch {
       setMessages((prev) => [...prev, { role: 'ai', text: 'Error: Unable to connect to Gemini API.' }]);
     }
   };
 
   return (
     <>
-      <button
-        onClick={() => setIsOpen(!isOpen)}
+      <div
+        onClick={toggleChat}
         style={{
           position: 'fixed',
           bottom: '20px',
           right: '20px',
           backgroundColor: '#4f46e5',
+          color: 'white',
           borderRadius: '50%',
           width: '60px',
           height: '60px',
-          color: 'white',
-          fontSize: '24px',
-          border: 'none',
-          boxShadow: '0 4px 12px rgba(0,0,0,0.2)',
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+          fontSize: '1.5rem',
           cursor: 'pointer',
+          boxShadow: '0 4px 12px rgba(0,0,0,0.3)',
           zIndex: 1000,
         }}
-        aria-label="Open Chat"
       >
         💬
-      </button>
+      </div>
 
       {isOpen && (
         <div
@@ -76,76 +73,58 @@ const GeminiChat = () => {
             bottom: '90px',
             right: '20px',
             width: '320px',
-            maxHeight: '500px',
-            backgroundColor: '#fff',
+            height: '420px',
+            backgroundColor: 'white',
             border: '1px solid #ccc',
             borderRadius: '12px',
-            boxShadow: '0 4px 16px rgba(0,0,0,0.2)',
+            boxShadow: '0 6px 20px rgba(0,0,0,0.2)',
+            zIndex: 1000,
             display: 'flex',
             flexDirection: 'column',
-            zIndex: 999,
             overflow: 'hidden',
+            fontFamily: 'Segoe UI, sans-serif',
           }}
         >
-          <div
-            style={{
-              backgroundColor: '#4f46e5',
-              color: 'white',
-              padding: '12px',
-              fontWeight: 'bold',
-              fontSize: '16px',
-              textAlign: 'center',
-            }}
-          >
-            Gemini AI Chat
+          <div style={{ padding: '10px', backgroundColor: '#4f46e5', color: 'white', fontWeight: 'bold' }}>
+            AI Chat Assistant
           </div>
-          <div
-            style={{
-              flex: 1,
-              padding: '12px',
-              overflowY: 'auto',
-              fontFamily: 'Segoe UI, sans-serif',
-              fontSize: '14px',
-              background: '#f9f9f9',
-            }}
-          >
-            {messages.map((msg, index) => (
+
+          <div style={{ flex: 1, padding: '10px', overflowY: 'auto' }}>
+            {messages.map((msg, idx) => (
               <div
-                key={index}
+                key={idx}
                 style={{
                   marginBottom: '10px',
                   textAlign: msg.role === 'user' ? 'right' : 'left',
                 }}
               >
-                <div
+                <span
                   style={{
                     display: 'inline-block',
-                    backgroundColor: msg.role === 'user' ? '#e0e7ff' : '#e5e7eb',
-                    color: '#000',
                     padding: '8px 12px',
-                    borderRadius: '16px',
+                    backgroundColor: msg.role === 'user' ? '#e0e7ff' : '#f3f4f6',
+                    borderRadius: '12px',
                     maxWidth: '80%',
                   }}
                 >
                   {msg.text}
-                </div>
+                </span>
               </div>
             ))}
-            <div ref={chatEndRef} />
           </div>
-          <div style={{ display: 'flex', borderTop: '1px solid #ddd' }}>
+
+          <div style={{ display: 'flex', borderTop: '1px solid #ccc' }}>
             <input
               type="text"
               value={input}
               onChange={(e) => setInput(e.target.value)}
               onKeyDown={(e) => e.key === 'Enter' && handleSend()}
-              placeholder="Ask me anything..."
+              placeholder="Ask something..."
               style={{
                 flex: 1,
                 padding: '10px',
                 border: 'none',
                 outline: 'none',
-                fontSize: '14px',
               }}
             />
             <button
@@ -153,19 +132,16 @@ const GeminiChat = () => {
               style={{
                 backgroundColor: '#4f46e5',
                 color: 'white',
+                padding: '10px 14px',
                 border: 'none',
-                padding: '0 16px',
-                fontWeight: 'bold',
                 cursor: 'pointer',
               }}
             >
-              Send
+              ➤
             </button>
           </div>
         </div>
       )}
     </>
   );
-};
-
-export default GeminiChat;
+}
