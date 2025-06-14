@@ -1,16 +1,42 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
 import Head from 'next/head';
+import { useRouter } from 'next/router';
+import { signOut, onAuthStateChanged } from 'firebase/auth';
+import { auth } from '../lib/firebase';
+
 import SpendingOverview from '../components/SpendingOverview';
 import UpcomingBills from '../components/UpcomingBills';
 import IncomeExpenseSummary from '../components/IncomeExpenseSummary';
-import GeminiChat from '../components/GeminiChat'; 
+import GeminiChat from '../components/GeminiChat';
 
 export default function Dashboard() {
+  const router = useRouter();
   const [spendingExpenses, setSpendingExpenses] = useState(0);
   const [billsExpenses, setBillsExpenses] = useState(0);
+  const [userEmail, setUserEmail] = useState('');
 
   const totalExpenses = spendingExpenses + billsExpenses;
+
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      if (user) {
+        setUserEmail(user.email);
+      } else {
+        router.push('/login');
+      }
+    });
+    return () => unsubscribe();
+  }, []);
+
+  const handleLogout = async () => {
+    try {
+      await signOut(auth);
+      router.push('/login');
+    } catch (error) {
+      alert("Logout failed: " + error.message);
+    }
+  };
 
   return (
     <>
@@ -34,39 +60,18 @@ export default function Dashboard() {
         fontFamily: 'Segoe UI, sans-serif'
       }}>
         <div style={{ fontSize: '1.8rem', fontWeight: '700' }}>Budget Buddy</div>
-        <nav>
+        <nav style={{ display: 'flex', alignItems: 'center' }}>
+          <span style={{ marginRight: '1.5rem', fontSize: '1rem' }}>Hi, {userEmail}</span>
           <Link href="/" passHref legacyBehavior>
-            <a style={{
-              color: 'white',
-              marginLeft: '1.5rem',
-              textDecoration: 'none',
-              fontWeight: '600'
-            }}>Home</a>
+            <a style={navLinkStyle}>Home</a>
           </Link>
           <Link href="/contact" passHref legacyBehavior>
-            <a style={{
-              color: 'white',
-              marginLeft: '1.5rem',
-              textDecoration: 'none',
-              fontWeight: '600'
-            }}>Contact</a>
+            <a style={navLinkStyle}>Contact</a>
           </Link>
           <Link href="/about" passHref legacyBehavior>
-            <a style={{
-              color: 'white',
-              marginLeft: '1.5rem',
-              textDecoration: 'none',
-              fontWeight: '600'
-            }}>About Us</a>
+            <a style={navLinkStyle}>About Us</a>
           </Link>
-          <Link href="/login" passHref legacyBehavior>
-            <a style={{
-              color: 'white',
-              marginLeft: '1.5rem',
-              textDecoration: 'none',
-              fontWeight: '600'
-            }}>Login</a>
-          </Link>
+          <button onClick={handleLogout} style={logoutButtonStyle}>Logout</button>
         </nav>
       </header>
 
@@ -84,7 +89,25 @@ export default function Dashboard() {
         <IncomeExpenseSummary totalExpenses={totalExpenses} />
       </main>
 
-      <GeminiChat /> {/* ✅ Floating Gemini AI Chatbot */}
+      <GeminiChat />
     </>
   );
 }
+
+const navLinkStyle = {
+  color: 'white',
+  marginLeft: '1.5rem',
+  textDecoration: 'none',
+  fontWeight: '600',
+};
+
+const logoutButtonStyle = {
+  marginLeft: '1.5rem',
+  padding: '0.5rem 1rem',
+  backgroundColor: 'white',
+  color: '#4f46e5',
+  fontWeight: '600',
+  border: 'none',
+  borderRadius: '6px',
+  cursor: 'pointer',
+};
