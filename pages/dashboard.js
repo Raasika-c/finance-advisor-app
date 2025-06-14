@@ -4,7 +4,7 @@ import Head from 'next/head';
 import SpendingOverview from '../components/SpendingOverview';
 import UpcomingBills from '../components/UpcomingBills';
 import IncomeExpenseSummary from '../components/IncomeExpenseSummary';
-import GeminiChat from '../components/GeminiChat'; // ✅ AI Chatbot
+import GeminiChat from '../components/GeminiChat'; 
 
 export default function Dashboard() {
   const [spendingExpenses, setSpendingExpenses] = useState(0);

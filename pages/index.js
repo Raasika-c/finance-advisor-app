@@ -33,7 +33,7 @@ export default function Home() {
           <a href="#how-it-works">How It Works</a>
           <a href="#faq">FAQ</a>
           <a href="#education">Finance Courses</a>
-          <a href="#">Login</a>
+          <a href="/login">Login</a>
         </nav>
       </header>
 
